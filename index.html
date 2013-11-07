@@ -14,7 +14,7 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/packetstory.min.css.gz">
+		<link rel="stylesheet" href="css/packetstory.min.css">
 		<link rel="stylesheet" href="css/theme/beige.css" id="theme">
 
 		<!--[if lt IE 9]>
@@ -27,7 +27,14 @@
 	</head>
 
 	<body>
-
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		  ga('create', 'UA-41236693-1', 'aptiwan.com');
+		  ga('send', 'pageview');
+		</script>
 		<div class="reveal">
 
 			<!-- Any section element inside of this container is displayed as a slide -->
@@ -1067,9 +1074,9 @@ $ <b>sudo ip route change default via 192.168.1.1 dev eth0 metric 100 mtu 9000</
 
 		</div>
 
-		<script src="lib/js/head.min.js.gz"></script>
-		<script src="js/reveal.min.js.gz"></script>
-		<script src="js/jquery.min.js.gz"></script>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+		<script src="js/jquery.min.js"></script>
 
 		<script>
 
@@ -1086,18 +1093,18 @@ $ <b>sudo ip route change default via 192.168.1.1 dev eth0 metric 100 mtu 9000</
 
 				// Optional libraries used to extend on reveal.js
 				dependencies: [
-					{ src: 'lib/js/classList.js.gz', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/semantic/js/semantic.min.js.gz', condition: function() { return !!document.querySelector('.ui'); } },
-					{ src: 'plugin/markdown/marked.js.gz', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js.gz', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/d3/js/d3.v3.min.js.gz', async: false, condition: function() { return !!document.querySelector( '[data-chart]' ); } },
-					{ src: 'plugin/d3/js/d3.geo.projection.v0.min.js.gz', async: false, condition: function() { return !!document.querySelector( '[data-chart=geo]' ); } },
-					{ src: 'plugin/d3/js/topojson.v1.min.js.gz', async: false, condition: function() { return !!document.querySelector( '[data-chart=geo]' ); } },
-					{ src: 'plugin/d3/js/vega.js.gz', async: false, condition: function() { return !!document.querySelector( '[data-chart="vega"]' ); } },
-					{ src: 'plugin/highlight/highlight.js.gz', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js.gz', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'plugin/notes/notes.js.gz', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'js/packetstory.min.js.gz', callback: function () {
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/semantic/js/semantic.min.js', condition: function() { return !!document.querySelector('.ui'); } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/d3/d3.v3.min.js', async: false, condition: function() { return !!document.querySelector( '[data-chart]' ); } },
+					{ src: 'plugin/d3/d3.geo.projection.v0.min.js', async: false, condition: function() { return !!document.querySelector( '[data-chart=geo]' ); } },
+					{ src: 'plugin/d3/topojson.v1.min.js', async: false, condition: function() { return !!document.querySelector( '[data-chart=geo]' ); } },
+					{ src: 'plugin/d3/vega.min.js', async: false, condition: function() { return !!document.querySelector( '[data-chart="vega"]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'js/packetstory.min.js', callback: function () {
 						$(document).ready(PacketStory.init);
 					}}
 				]
