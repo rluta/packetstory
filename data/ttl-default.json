@@ -1,0 +1,15 @@
+[
+{"net":"adsl","try":0,"send":0,"receive":0,"bytes":0,"done":0},
+{"net":"adsl","try":0,"send":20,"receive":40,"bytes":4500,"done":0}, 
+{"net":"adsl","try":0,"send":40,"receive":60,"bytes":0,"done":0},
+{"net":"adsl","try":0,"send":60,"receive":80,"bytes":7500,"done":0}, 
+{"net":"adsl","try":0,"send":80,"receive":100,"bytes":0,"done":0},
+{"net":"adsl","try":0,"send":100,"receive":120,"bytes":16500,"done":0},
+{"net":"adsl","try":0,"send":120,"receive":140,"bytes":0,"done":0},
+{"net":"adsl","try":0,"send":140,"receive":160,"bytes":31500,"done":0},
+{"net":"adsl","try":0,"send":160,"receive":180,"bytes":0,"done":0}, 
+{"net":"adsl","try":0,"send":180,"receive":200,"bytes":64500,"done":0},
+{"net":"adsl","try":0,"send":200,"receive":220,"bytes":0,"done":0},
+{"net":"adsl","try":0,"send":220,"receive":240,"bytes":66000,"done":0},
+{"net":"adsl","try":0,"send":260,"receive":280,"bytes":66000,"done":0}
+]

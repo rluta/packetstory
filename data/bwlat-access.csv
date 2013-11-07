@@ -1,0 +1,7 @@
+date,name,bandwidth,latency
+1994,Modem,14.4,150
+1998,Modem,57.6,100
+2000,ADSL,512,50
+2004,ADSL 2,20000,40
+2009,Cable,100000,20
+2013,Fibre,1000000,5

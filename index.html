@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Need For Speed: Packet Edition</title>
+
+		<meta name="description" content="An introduction to network performance for application developpers">
+		<meta name="author" content="Raphaël Luta">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/packetstory.min.css.gz">
+		<link rel="stylesheet" href="css/theme/beige.css" id="theme">
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+		<script type="text/javascript">
+			<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    	</script>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Need for Speed:<br />Packet Edition</h1>
+					<h3>Primer to network performance for normal people</h3>
+					<p>
+						<small>Created by <a href="http://www.aptiwan.com">Raphaël Luta</a> / <a href="http://twitter.com/raphaelluta">@raphaelluta</a></small>
+					</p>
+					<br /><br />
+					<p><a href="http://twitter.com/raphaelluta">#PerfUG</a></p>
+				</section>
+
+				<section>
+					<h2>About me</h2>
+					<br />
+					<p>
+						Freelance technical consultant
+					</p>
+					<p>
+						Web, Mobile, (Big) Data, Performance
+					</p>
+					<div style="text-align: left; margin-top: 3em">
+						<p>Twitter: <b>@raphaelluta</b></p>
+						<p>Mail: <b>raphael.luta at aptiwan.com</b></p>
+					</div>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Your new application...</h2>
+					<img src="images/cat-awesome.jpg" />
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>...as your customers see it</h2>
+					<img src="images/cat-fat-sad.jpg" />
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>...as viewed by the network guys</h2>
+					<img src="images/boxes.jpg" />
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Their job is delivery</h2>
+					<img src="images/dhl-superman.jpg" />
+					<aside class="notes"></aside>
+				</section>
+				
+				<section>
+					<h2 style="margin-bottom: 1em">Network characteristics</h2>
+					<div class="ui large">
+						<p class="fragment roll-in">Bandwidth</p>
+						<p class="fragment roll-in">Latency</p>
+						<p class="fragment roll-in">Error rate</p>
+						<p class="fragment roll-in">Duplex</p>
+						<p class="fragment roll-in">MTU</p>
+						<p class="fragment roll-in">Jitter</p>
+					</div>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>An alternate view of networks</h2>
+					<div style="position: absolute">
+						<img class="frgament" src="images/road-elements.jpg" style="z-index: 0"/>
+						<div class="fragment roll-in caption" style="top: 100px; left: 290px">
+							<p>Full Duplex</p>
+							<svg width="390px" height="100px" viewBox="0 0 390 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<g class="arrow">
+								<path class="line" d="M170,0 L170,90"></path>
+        						<path class="triangle" d="M160,80 L180,80 L170,100 M160,80"></path>
+    						</g>
+							<g class="arrow">
+    	    					<path class="line" d="M210,0 L210,90"></path>
+        						<path class="triangle" d="M200,80 L220,80 L210,100 M200,80"></path>
+    						</g>
+							</svg>
+						</div>
+						<div class="fragment roll-in caption" style="top: 380px; right: 0px">
+							<svg width="330px" height="15px" viewBox="0 0 330 15" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<g id="line" class="arrow">
+        						<path class="line" d="M10,7.5 L320,7.5"></path>
+        						<path class="triangle"  d="M0,7.5 L20,0 L20,15 M0,7.5"></path>
+        						<path class="triangle" d="M330,7.5 L310,0 L310,15 M330,7.5"></path>
+    						</g>
+							</svg>
+							<p>Bandwidth</p>
+						</div>
+						<div class="fragment roll-in caption" style="top: 340px; right: 230px">
+							MTU
+							<svg width="150px" height="15px" viewBox="0 0 150 15" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<g class="arrow">
+        					<path class="line" d="M10,7.5 L140,7.5"></path>
+        					<path class="triangle" d="M0,7.5 L20,0 L20,15 M0,7.5"></path>
+        					<path class="triangle" d="M150,7.5 L130,0 L130,15 M150,7.5"></path>
+    					</g>
+					</svg>
+						</div>
+						<div class="fragment roll-in caption" style="top: 100px; right: 40px">
+							<p>Latency</p>
+							<svg width="120px" height="180px" viewBox="0 0 120 180" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<g class="arrow">
+        						<path class="line" d="M60,0 L60,90 L100,90 L100,170 L20,170 L20,90 L60,90 M60,90"></path>
+    						</g>
+    						</svg>
+						</div>
+						<div class="fragment roll-in caption" style="top: 350px; left: 180px">
+							Jitter
+							<svg width="60px" height="15px" viewBox="0 0 60 15" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<g class="arrow">
+        						<path class="line" d="M0,7.5 L50,7.5"></path>
+        						<path class="triangle" d="M60,7.5 L40,0 L40,15 M60,7.5"></path>
+    						</g>
+							</svg>
+						</div>
+    				</div>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Error Rate</h2>
+					<img src="images/packet-loss.jpg" />
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Quizz time</h2>
+					<div>
+						<img src="images/road-bordercontrol.jpg" />
+						<span class="fragment roll-in large caption" style="left: 35%; top: 48%">Firewall</span>
+					</div>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Ideal conditions</h2>
+					<br/>
+					<p><strong>Duplex</strong> must be <strong class="red">full</strong></p>
+					<p><strong>Error rate</strong> should be close to <strong class="red">0.0 %</strong></p>
+					<p><strong>MTU</strong> should be <strong class="red">as big as possible</strong></p>
+					<br/>
+					<p class="fragment roll-in">Ethernet <strong>MTU</strong> is normalized</p>
+					<code class="fragment roll-in"><br />
+						...the maximum length of an IP datagram sent over an Ethernet is <strong>1500 octets</strong>.
+   						<br />
+   						<br /><a href="http://tools.ietf.org/html/rfc894">IETF RFC 894</a>
+					</code>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2></h2>
+					<img src="images/latency-kills.jpg" />
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Bandwidth vs Latency Evolution</h2>
+					<div id="bwlat-toolbars" class="ui tabular menu">
+						<a class="active item" data-source="data/bwlat-chart-access.json">Consumer access networks</a>
+						<a class="item" data-source="data/bwlat-chart-ethernet.json" style="margin-right: 100px">Ethernet networks</a>
+						<div class="ui right small buttons">
+							<div class="ui small button disabled">Scale:</div>
+							<div id="bwlat-log" class="ui small button active">Log</div>
+							<div id="bwlat-linear" class="ui small button">Linear</div>						
+						</div>
+					</div>
+					<div id="bwlat_chart" data-chart="vega"></div>
+					<p>Over the last 20 years, bandwidth has improved 1,000 times faster than latency</p> 
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Basics: Light speed</h2>
+					<br />
+					<div class="ui fluid center aligned large">
+					<code>c = 300,000 km/s</code>
+					<p class="fragment">(in vacuum)</p>
+					<br />
+					<p class="fragment roll-in">That's about 190,000 km/s in fiber</p>
+					<br />
+					<p class="fragment roll-in">approx. 5 ms per 1,000 km</p>
+					<br /> 
+					<div class="fragment roll-in">
+						<table class="ui small table">
+						<tbody>
+							<tr><th>Paris - Dublin</th><td>800 km</td><td>4 ms</td>
+							<tr><th>Paris - New York</th><td>6,000 km</td><td>30 ms</td>
+							<tr><th>Paris - San Fransisco</th><td>9,000 km</td><td>45 ms</td>
+						</tbody>
+						</table> 
+					</div>
+					</div>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Common networks</h2>
+					<table class="ui small table deiniton segment">
+						<thead>
+							<tr><th></th><th>Bandwidth (Mbps)</th><th>Latency / RTT (ms)</th></tr>
+						</thead>
+						<tbody>
+							<tr><th>Ethernet</th><td>1,000</td><td>0.5</td></tr>
+							<tr><th>ADSL 2</th><td>20<i class="arrow basic down icon" /> 0.7<i class="arrow basic up icon"/></td><td>30</td></tr>
+							<tr><th>Fibre/Cable</th><td>100<i class="arrow basic down icon" /> 5<i class="arrow basic up icon"/></td><td>15</td></tr>
+							<tr><th>3G</th><td>42</td><td>50</td></tr>
+							<tr><th>EDGE</th><td>1.5</td><td>300</td></tr>
+							<tr><th>WiFi</th><td>2-342*</td><td>2*</td></tr>
+							<tr><th>Satellite</th><td>1-1,000</td><td>500</td></tr>
+						</tbody>
+					</table>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<section>
+						<h2>Tools</h2>
+						<img src="images/toolbox1.jpg" />
+						<aside class="notes"></aside>
+					</section>
+					<section id="clitools"  data-tabular>
+						<h2>Command line Tools</h2>
+						<div class="ui tabular fluid large menu">
+							<div class="item active" data-tab="ping">ping</div>
+							<div class="item" data-tab="traceroute">traceroute</div>
+							<div class="item" data-tab="tc">tc</div>
+						</div>
+						<div id="ping" class="ui tab accordion fluid">
+							<div class="title">
+								Basic usage
+							</div>
+							<div class="content">
+							<code>
+$ <b>ping www.aptiwan.com</b><br />
+PING www.aptiwan.com (108.162.198.20) 56(84) bytes of data.<br />
+64 bytes from 108.162.198.20: icmp_req=1 ttl=63 time=28.3 ms<br />
+64 bytes from 108.162.198.20: icmp_req=2 ttl=63 time=27.5 ms<br />
+64 bytes from 108.162.198.20: icmp_req=3 ttl=63 time=27.1 ms<br />
+^C64 bytes from 108.162.198.20: icmp_req=4 ttl=63 time=27.9 ms<br />
+<br />
+--- www.aptiwan.com ping statistics ---<br />
+4 packets transmitted, 4 received, 0% packet loss, time 3008ms<br />
+rtt min/avg/max/mdev = 27.104/27.747/28.359/0.505 ms<br />
+<br />
+							</code>
+							</div>
+							<div class="title">
+								MTU testing
+							</div>
+							<div class="content">
+							<code>
+$ <b>ping -s 1472 www.aptiwan.com</b><br />
+PING www.aptiwan.com (108.162.198.20) 1472(1500) bytes of data.<br />
+1480 bytes from 108.162.198.20: icmp_req=1 ttl=63 time=40.2 ms<br />
+1480 bytes from 108.162.198.20: icmp_req=2 ttl=63 time=41.1 ms<br />
+1480 bytes from 108.162.198.20: icmp_req=3 ttl=63 time=40.8 ms<br />
+^C<br />
+--- www.aptiwan.com ping statistics ---<br />
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms<br />
+rtt min/avg/max/mdev = 40.258/40.741/41.154/0.404 ms<br />
+<br />
+$ <b>ping -s 1500 www.aptiwan.com</b><br />
+PING www.aptiwan.com (108.162.198.20) 1500(1528) bytes of data.<br />
+^C<br />
+--- www.aptiwan.com ping statistics ---<br />
+3 packets transmitted, 0 received, 100% packet loss, time 2017ms<br />
+							</code>
+							</div>
+						</div>
+						<div id="traceroute" class="ui tab accordion fluid">
+							<div class="title">
+								Basic usage
+							</div>
+							<div class="content">
+							<code>
+$ <b>traceroute www.aptiwan.com</b><br />
+to www.aptiwan.com (108.162.199.20), 30 hops max, 60 byte packets<br />
+ 1  vss-7a-6k.fr.eu (176.31.125.253)  0.629 ms * *<br />
+ 2  rbx-g2-a9.fr.eu (91.121.128.118)  1.246 ms  1.241 ms  1.232 ms<br />
+ 3  * * *<br />
+ 4  195.66.225.179 (195.66.225.179)  4.246 ms  4.220 ms  4.225 ms<br />
+ 5  108.162.199.20 (108.162.199.20)  4.212 ms  4.203 ms  4.194 ms<br />
+							</code>
+							</div>
+							<div class="title">
+								Service discovery / firewall testing
+							</div>
+							<div class="content">
+							<code>
+$ <b>sudo traceroute -m 7 -w 1 -T -p 80 www.aptiwan.com</b><br />
+to www.aptiwan.com (108.162.198.20), 10 hops max, 60 byte packets<br />
+ 1  vss-7a-6k.fr.eu (176.31.125.253)  0.583 ms * *<br />
+ 2  rbx-g1-a9.fr.eu (91.121.128.114)  0.901 ms  1.143 ms  1.142 ms<br />
+ 3  * * *<br />
+ 4  * * *<br />
+ 5  195.66.225.179 (195.66.225.179)  4.260 ms  4.277 ms  4.261 ms<br />
+ 6  108.162.198.20 (108.162.198.20)  4.261 ms  4.274 ms  4.235 ms<br />
+<br />
+$ <b>sudo traceroute -m 7 -w 1 -T -p 443 www.aptiwan.com</b><br />
+to www.aptiwan.com (108.162.199.20), 10 hops max, 60 byte packets<br />
+ 1  vss-7a-6k.fr.eu (176.31.125.253)  0.561 ms * *<br />
+ 2  rbx-g2-a9.fr.eu (91.121.128.118)  0.964 ms  0.968 ms  1.279 ms<br />
+ 3  * * *<br />
+ 4  195.66.225.179 (195.66.225.179)  4.199 ms  4.206 ms  4.203 ms<br />
+ 5  * * *<br />
+ 6  * * *<br />
+ 7  * * *<br />
+							</code>
+							</div>
+						</div>
+						<div id="tc" class="ui tab accordion fluid">
+							<div class="title">
+								Add constant latency
+							</div>
+							<div class="content">
+							<code>
+$ <b>ping -c 1 -n www.google.fr</b><br />
+PING www.google.fr (173.194.40.215) 56(84) bytes of data.<br />
+64 bytes from 173.194.40.215: icmp_req=1 ttl=55 time=12.6 ms<br />
+<br />
+--- www.google.fr ping statistics ---<br />
+1 packets transmitted, 1 received, 0% packet loss, time 0ms<br />
+rtt min/avg/max/mdev = 12.615/12.615/12.615/0.000 ms<br />
+<br />
+$ <b>sudo tc qdisc add dev eth0 root netem delay 20ms</b><br />
+<br />
+$ <b>sudo tc qdisc show dev eth0</b><br />
+qdisc netem 8004: root refcnt 2 limit 1000 delay 20.0ms<br />
+<br/>
+$ <b>ping -c 1 -n www.google.fr</b><br />
+PING www.google.fr (173.194.40.223) 56(84) bytes of data.<br />
+64 bytes from 173.194.40.223: icmp_req=1 ttl=55 time=32.9 ms<br />
+<br />
+--- www.google.fr ping statistics ---<br />
+1 packets transmitted, 1 received, 0% packet loss, time 0ms<br />
+rtt min/avg/max/mdev = 32.901/32.901/32.901/0.000 ms<br />
+							</code>
+							</div>
+							<div class="title">
+								Add latency + jitter
+							</div>
+							<div class="content">
+							<code>
+$ <b>sudo tc qdisc change dev eth0 root netem delay 20ms 2ms 15%</b><br />
+<br />
+$ <b>sudo tc qdisc show dev eth0</b><br />
+qdisc netem 8005: root refcnt 2 limit 1000 delay 20.0ms  2.0ms 15%<br />
+<br/>
+							</code>
+							</div>
+							<div class="title">
+								Lossy connection
+							</div>
+							<div class="content">
+							<code>
+$ <b>sudo tc qdisc change dev eth0 root netem loss 1</b><br />
+<br />
+$ <b>sudo tc qdisc show dev eth0</b><br />
+qdisc netem 8005: root refcnt 2 limit 1000 loss 1%<br />
+<br/>
+							</code>
+							</div>
+							<div class="title">
+								Remove shaping
+							</div>
+							<div class="content">
+							<code>
+$ <b>sudo tc qdisc del dev eth0 root</b><br />
+<br />
+$ <b>sudo tc qdisc show dev eth0</b><br />
+qdisc pfifo_fast 0: root refcnt 2 bands 3 priomap  1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1<br />
+<br/>
+							</code>
+							</div>
+							<div class="title">
+								Limit bandwidth (advanced)
+							</div>
+							<div class="content">
+							<code>
+$ <b>sudo tc qdisc add dev eth0 root handle 1: cbq avpkt 1000 bandwidth 10Mbit</b><br />
+<br />
+$ <b>sudo tc qdisc show dev eth0</b><br />
+qdisc cbq 1: root refcnt 2 rate 10000Kbit (bounded,isolated) prio no-transmit<br />
+							</code>
+							</div>
+						</div>
+						<aside class="notes"></aside>
+					</section>
+					<section>
+						<h2>GUI Tools</h2>
+						<ul>
+							<li><a href="http://smokeping.ovh.net/ovh-server-statistics/show.cgi?target=DNS.DNSOVH">smokeping</a></li>
+							<li><a href="https://developer.apple.com/downloads/index.action">Network Link Conditioner</a></li>
+							<li><a href="http://tmurgent.com/Tools.aspx">TMNetSim</a></li>
+							<li><a href="http://www.charlesproxy.com/">Charles Proxy</a></li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h2>Back to delivery</h2>
+					<img src="images/truck-encapsulation.jpg" />
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>UDP: Express delivery</h2>
+					<br />
+					<ul>
+						<li>Stateless communication</li>
+						<li>No reception guarantees</li>
+						<br />
+						<li>Simple and efficient</li>
+						<li>Can easily saturate network links</li>
+						<br />
+						<li>Some well-known use cases:
+							<ul>
+								<li>DNS, NTP, DHCP</li>
+								<li>RTP, NFS (v1-3)</li>
+								<li>SNMP, Syslog</li>	
+							</ul>
+						</li>
+					</ul>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>TCP: Reliable delivery</h2>
+					<br />
+					<ul>
+						<li>Stateful, connection oriented protocol</li>
+						<br />
+						<li>Guarantees data delivery
+							<ul>
+								<li>Error detection</li>
+								<li>Automatic retransmission</li>
+								<li>Preserve order</li>
+							</ul>
+						</li>
+						<br />
+						<li>Sophisticated flow control
+							<ul>
+								<li>Prevents client overload</li>
+								<li>Prevents network congestion</li>
+							</ul>
+						</li>
+					</ul>					
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Typical TCP Chat</h2>
+					<div id="tcp-scene" class="ui center aligned grid">
+						<div class="four wide column">
+							<div id="recipient-state" class="ui vertical fluid menu">
+								<div class="header item">Server State</div>
+								<div class="item state">Closed</div>
+							</div>
+						</div>
+						
+						<div class="eight wide column">
+							<div class="ios7 ui vertical fluid menu">
+								<div class="header item">Messages</div>
+								<div class="message-wrapper item">
+									<div class="message to fragment" data-flag-before="SYN" data-sender-state="Connecting"  >Hello</div>
+									<div class="message from fragment" data-flag-before="ACK" data-flag-after="SYN" data-recipient-state="Connecting">Hi. How are you ?</div>
+									<div class="fragment to" data-flag-before="ACK" data-sender-state="<b>Established</b>" data-recipient-state="<b>Established</b>">
+										<div class="message to">Fine</div>
+										<br />
+									</div>
+									<div class="message to fragment">Can you show me your pussy ?</div>
+									<div class="message from fragment"><img src="images/chick-pussy.jpg" /></div>
+									<div class="fragment" data-flag-after="FIN" data-recipient-state="Closing">
+										<br />
+										<div class="message from">Now get lost</div>
+									</div>
+									<div class="message to fragment" data-flag-after="ACK">ok</div>
+									<div class="message to fragment" data-flag-after="FIN" data-sender-state="Closing">CU</div>
+									<div class="message from fragment" data-flag-before="ACK" data-sender-state="Closed" data-recipient-state="Closed (time wait)">FU</div>
+									<div class="fragment" data-recipient-state="Closed" style="display: none"></div>
+								</div>
+							</div>
+						</div>
+						<div class="four wide column">
+							<div id="sender-state" class="ui fluid vertical menu">
+								<div class="header item">Client State</div>
+								<div class="item state">Closed</div>
+							</div>
+						</div>
+					</div>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Windows Everywhere</h2>
+					<div style="text-align: left">
+					<br />
+					<ul>
+						<li class="fragment roll-in">Windows regulate flow between sender and recipient
+							<ul>
+								<li>Receiver window (<strong>rwnd</strong>) avoids recipient overload</li>
+								<li>Congestion window (<strong>cwnd</strong>) prevents network saturation</li>
+							</ul>
+						</li>
+						<br/>
+						<li class="fragment roll-in"><i>Max # of inflight bytes = min(rwnd, cwnd)</i></li>
+						<br />
+						<li class="fragment roll-in">Window changes determined by :
+							<ul>
+								<li>Recipient available buffer (rwnd)</li>
+								<li>Slow start (cwnd)</li>
+								<li>Congestion avoidance (cwnd)</li>
+							</ul>
+						</li>
+						<br />
+						<li class="fragment roll-in"><strong>Congestion window is small in a new connection</strong></li>
+					</ul>
+					</div>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+				<section>
+					<h2>Time to Load</h2>
+					<div class="ui one column grid">
+						<div class="row">
+							<div id="ttl-chart" class="column"/>
+						</div>
+						<div class="row">						
+							<div class="column">
+								<div class="ui tiered menu">
+								<div id="networks" class="ui menu">
+									<div data-net="adsl0" class="item active">ADSL 
+										<div class="ui large label">300 ms</div>
+									</div>
+									<div class="ui item left pointing dropdown icon">
+										<i class="add basic icon"></i>
+										<div class="menu">
+											<div class="item">ADSL</div>
+											<div class="item">Fibre</div>
+											<div class="item">Ethernet</div>
+											<div class="item">Mobile</div> 
+										</div>
+									</div>
+									<div class="right menu">
+										<div class="item">
+											<div id="delay-ack" class="ui button active">D. Ack</div>
+										</div>
+										<div class="item">Payload (KB): 
+											<div data-payload="200" data-min="1" data-max="1000" data-step="1" class="ui large label">200</div>
+										</div>
+									</div>
+								</div>
+								<div id='net-properties' class="ui sub menu" data-net="adsl">
+									<div class="item">
+										Bandwidth (Mbps): <div data-property="bw" class="ui large label">0</div>
+									</div>
+									<div class="item">
+										RTT (ms): <div data-property="rtt" class="ui large label">0</div>
+									</div>
+									<div class="item">
+										Rwnd (kB): <div data-property="rwnd" class="ui large label">0</div>
+									</div>
+									<div class="item">
+										Cwmd (p.): <div data-property="cwnd" class="ui large label">0</div>
+									</div>
+									<div class="item">
+										MTU (B): <div data-property="mtu" class="ui large label">0</div>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<aside class="notes"></aside>					
+				</section>
+					<section>
+						<h2>Time to load <span id="ttl-target"></span> kB</h2>
+						<table class="ui small table deiniton segment">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Bw</th>
+									<th>RTT</th>
+									<th>Windows</th>
+									<th>MTU</th>
+									<th>Time</th>
+									<th>Tput (kbps)</th>
+								</tr>
+							</thead>
+							<tbody id="ttl-summary">
+							</tbody>
+						</table>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Tools (part 2)</h2>
+						<img src="images/toolbox2.jpg" />
+						<aside class="notes"></aside>
+					</section>
+					<section id="clitools2" data-tabular>
+						<h2>Command Line Tools</h2>
+						<div class="ui tabular fluid large menu">
+							<div class="item active" data-tab="iperf">iperf</div>
+							<div class="item" data-tab="ss">ss</div>
+							<div class="item" data-tab="tcpdump">tcpdump</div>
+						</div>
+						<div id="tcpdump" class="ui tab fluid" style="text-align: left">
+							<div class="content">
+							<code>
+<b>$ sudo tcpdump -i eth0 -s 1500 -w /tmp/trace.pcap "tcp and port 80"</b><br />
+^C1847 packets captured<br>
+1849 packets received by filter<br>
+0 packets dropped by kernel<br>
+							</code>
+							</div>
+						</div>
+						<div id="ss" class="ui tab fluid" style="text-align: left;">
+							<div class="content">
+							<code>
+<b>$ ss -ti</b><br />
+<pre>
+State  Recv-Q Send-Q     Local Address:Port         Peer Address:Port
+ESTAB  0      208        176.31.125.78:ssh          86.70.100.151:50669
+	 cubic wscale:4,7 rto:244 rtt:35/4 ato:40
+	 cwnd:10 ssthresh:7 send 3.3Mbps rcv_rtt:44 rcv_space:14480
+</pre>
+							</code>
+							</div>
+						</div>
+						<div id="iperf" class="ui tab fluid" style="text-align: left">
+							<div class="content">
+							<code>
+ns397279:~$ <b>iperf -s</b><br>
+<pre>
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+</pre>
+<br>
+$ <b>iperf -c ns397279.ovh.net -m -w 85kB</b><br>
+<pre>
+------------------------------------------------------------
+Client connecting to ns397279.ovh.net, TCP port 5001
+TCP window size:  166 KByte (WARNING: requested 83.0 KByte)
+------------------------------------------------------------
+[  3] local 10.0.2.15 port 39293 connected with 176.31.125.78 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-12.3 sec  1.75 MBytes  1.20 Mbits/sec
+[  3] MSS size 1460 bytes (MTU 1500 bytes, ethernet)
+</pre>
+
+							</code>
+							</div>
+						</div>
+						<aside class="notes"></aside>
+					</section>
+					<section>
+						<h2>GUI Tools: Wireshark</h2>
+						<img src="images/wireshark.png" />
+						<aside class="notes"></aside>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Tuning corner</h2>
+						<img src="images/truck-tuning.jpg" />
+						<aside class="notes"></aside>
+					</section>
+					
+					<section id="tuning">
+						<h2>Linux tuning</h2>
+						<div class="ui accordion fluid">
+							<div class="title">
+								Adjust initial congestion window
+							</div>
+							<div class="content">
+								<code>
+$ <b>sudo ip route change default via 192.168.1.1 dev eth0 metric 100 initcwnd 10</b><br>
+$ <b>ip route | grep default </b><br>
+default via 192.168.1.1 dev eth0  metric 100  mtu 1500 initcwnd 10<br>
+								</code>
+							</div>
+							<div class="title">
+								Avoid slow-start after idle connections
+							</div>
+							<div class="content">
+								<code>
+$ <b>sudo sysctl -w net.ipv4.tcp_slow_start_after_idle = 0</b>
+								</code>
+							</div>
+							<div class="title">
+								Adjust windows
+							</div>
+							<div class="content">
+								<code>
+$ <b>cat /proc/sys/net/ipv4/tcp_rmem</b><br>
+4096	87380	6291456<br>
+<br>
+# <b>echo 4096 87380 16777216 > /proc/sys/net/ipv4/tcp_rmem</b><br>
+<br>
+$ <b>cat /proc/sys/net/ipv4/tcp_wmem</b><br>
+4096	16384	4194304<br>
+<br>
+# <b>echo 4096 65536 16777216 > /proc/sys/net/ipv4/tcp_wmem</b><br>
+								</code>
+							</div>
+							<div class="title">
+								Increase MTU
+							</div>
+							<div class="content">
+								<code>
+$ <b>sudo ifconfig eth0 mtu 9000 up</b><br>
+$ <b>sudo ip route change default via 192.168.1.1 dev eth0 metric 100 mtu 9000</b>
+								</code>
+							</div>
+						</div>
+					</section>
+				</section>
+
+				<section>
+					<h2>Evil forces</h2>
+					<img src="images/sith-kitty.jpg" />
+					<img src="images/darth-doggy.jpg" />
+					<aside class="notes"></aside>
+				</section>
+
+				<section> 		
+					<section>
+						<h2>Encapsulation</h2>
+						<img src="images/packet-encapsulation.jpg" />
+						<aside class="notes"></aside>
+					</section>
+					<section>
+						<h2>Using an IPSEC VPN</h2>
+						<br />
+						<div class="ui fluid middle left aligned grid">
+						<div class="row">
+							<div class="four wide column label">Payload data</div>
+							<div class="twelve wide column">
+								<div class="packet ui large center aligned celled fluid grid">
+									<div class="payload sixteen column wide">Data</div>
+								</div>
+							</div>
+						</div>
+						<div class="row fragment roll-in">
+							<div class="four wide column label">TCP Packet</div>
+							<div class="twelve wide column">
+								<div class="packet ui large center aligned celled grid">
+									<div class="header one column wide">IP</div>
+									<div class="header one column wide">TCP</div>
+									<div class="payload fourteen column wide">Data</div>
+								</div>
+							</div>
+						</div>
+						<div class="row fragment roll-in">
+							<div class="four wide column label">VPN/L2TP<br />w/ NAT traversal</div>
+							<div class="twelve wide column">
+								<div class="packet ui large center aligned celled grid">
+									<div class="header one column wide">IP</div>
+									<div class="header one column wide">UDP</div>
+									<div class="header one column wide">ESP</div>
+									<div class="header one column wide">UDP</div>
+									<div class="header one column wide">L2TP</div>
+									<div class="header one column wide">PPP</div>
+									<div class="header one column wide">IP</div>
+									<div class="header one column wide">TCP</div>
+									<div class="payload six column wide">Data</div>
+									<div class="header two column wide">ESP</div>
+								</div>
+							</div>
+						</div>
+						<div class="row fragment roll-in">
+							<div class="sixteen wide column label">
+								<ul>
+									<br />
+									<li>Total header and trailer size at least 140 bytes</li>
+									<br />
+									<li>Bandwidth loss is at least 10%, typically closer to 25-30 % for most applications</li>
+								</ul>
+							</div>
+						</div>
+						</div>
+						<aside class="notes"></aside>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Data Bloat</h2>
+						<img src="images/packet-padding.jpg" />
+						<aside class="notes"></aside>
+					</section>
+					<section>
+						<h2>Example: SOAP Request</h2>
+						<div class="ui one column fluid grid">
+							<div class="row">
+								<p id="data-text" style="height:600px; overflow-y: scroll; font-size: 1.4rem;">&nbsp;</p>
+							</div>
+						</div>
+						<aside class="notes"></aside>
+					</section>
+					<section>
+						<h2>Request statistics</h2>
+						<table class="ui table small" style="margin-top: 2em; margin-bottom: 1em;">
+						<tbody>
+							<tr>
+								<th>Markup size</th>
+								<td id="data-markup"></td>
+							</tr>
+							<tr>
+								<th>Content size</th>
+								<td id="data-content"></td>
+							</tr>
+							<tr>
+								<th>Bytes before first content</th>
+								<td id="data-first"></td>
+							</tr>
+						</tbody>
+						</table>
+						<div class="fragment roll-in"><p><strong>Just say no !</strong></p></div>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Small packets</h2>
+						<img src="images/packet-toomany.jpg" />
+						<aside class="notes"></aside>
+					</section>
+
+					<section>
+						<h2>Database join query</h2>
+						<div style="text-align: left;">						
+						<h3>Objective</h3>
+						<p>Retrieve a list of orders for 100 customers</p>
+						<h3>Assumptions</h3>
+						<ul>
+						<li>Average 4 orders per customer</li>
+						<li>Average 50 bytes of info per order</li>
+						<li>Average 20 bytes of info per customer</li>
+						<li>Network RTT is 1 ms, bandwidth 1 Gbps</li>
+						</ul>
+						</div>
+						<aside class="notes"></aside>
+					</section>
+
+					<section>
+						<h2>Query styles</h2>
+						<div style="text-align: left">
+						<p><b>Big join</b></p>
+						<code class="small cli">
+							$orders = query(<strong>select c.name, o.* <br />&nbsp;&nbsp;from customers c join orders o on c.id = o.custId</strong>)
+						</code>
+						</div>
+						<br /> 
+						<div class="fragment roll-in" style="text-align: left">
+						<p><b>Lazy join</b></p>
+						<code class="small cli">
+							$custs = query(<strong>"select id,name from customers"</strong>)<br />
+							<br />
+							for ($custs as $c) <br />
+							&nbsp;&nbsp;$orders = query(<strong>"select * from orders where custId=${c->id}"</strong>)<br />
+						</code>
+						</div>
+						<aside class="notes"></aside>
+					</section>
+
+					<section>
+						<h2>Query analysis</h2>
+						<div style="text-align: left">
+						<p><b>Big join</b></p>
+						<code class="small cli">
+							70 bytes * (100 * 4) = 28000 bytes payload<br />
+							1 RTT connect + 3 RTT payload + query time
+						</code>
+						<br />
+						<code class="fragment roll-in small cli">
+							<strong>Total: 4 ms + query</strong> (20 packets, 28.4 kB transfer)							
+						</code>
+						</div>
+						<br />
+						<div class="fragment roll-in" style="text-align: left">
+						<p><b>Lazy join</b></p>
+						<code class="small cli">
+							First query:<br />
+							&nbsp;&nbsp;24 bytes * 100 = 2400 bytes payload<br />
+							&nbsp;&nbsp;1 RTT connect + 1 RTT payload + query time<br />
+						</code>
+						<code class="fragment roll-in small cli">
+							Per customer id (x100):<br />
+							&nbsp;&nbsp;50 bytes * 4 = 200 bytes<br />
+							&nbsp;&nbsp;1 RTT payload + query time
+						</code>
+						<br />
+						<code class="fragment roll-in small cli">
+							<strong>Total: 102 ms + query</strong> (102 packets, 26.48 kB transfer)
+						</code>
+						</div>
+						<aside class="notes"></aside>
+					</section>
+				</section>
+
+				<section>
+					<h2>Use the Force !</h2>
+					<img src="images/cat-yoda.jpg" />
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<section>
+						<h2>Minimize content size</h2>
+						<img src="images/cat-box-compress.jpg" />
+						<aside class="notes"></aside>
+					</section>
+					<section>
+						<h2>Minimization Strategies</h2>
+						<br />
+						<ul>
+							<li>Eliminate noise
+								<ul>
+									<li>White spaces, comments, EXIF profiles, etc...</li>
+								</ul>
+							</li>
+							<br />
+							<li>Ensure good serialization
+							<ul>
+								<li>Beware excessive field name lengths</li>
+								<li>Value dictionaries are your friend</li>
+							</ul>
+							</li>
+							<br />
+							<li>Use efficient protocols
+							<ul>
+								<li>Protobuf, Thrift, Avro</li>
+								<li>JSON</li>
+							</ul>
+							</li>
+						</ul>
+						<aside class="notes"></aside>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Reuse connections</h2>
+						<br />
+						<div>
+						<ul>
+							<li>Each new connection costs a full RTT</li>
+							<br>
+							<li>Effective bandwidth is constrained for the first 150 KB</li>
+						</ul>
+						</div>
+						<br />
+						<h3 class="fragment roll-in">... especially with SSL/TLS !</h3>
+						<div class="fragment roll-in" style="text-align: left">
+							<br />
+							<ul>
+							<li>TLS negociation adds <strong>at least</strong> 2 RTTs and costs a lot of CPU to set-up</li>
+							</ul>
+						</div>
+						<aside class="notes"></aside>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Compress data</h2>
+						<img src="images/cat-minimize.jpg" />
+						<aside class="notes"></aside>
+					</section>
+				
+					<section>
+						<h2>Compression trade-offs</h2>
+						<ul style="text-align: left">
+							<br />
+							<li class="fragment">Big performance win for clients...</li>
+							<br />
+							<li class="fragment">but requires available CPU on server</li>
+							<br />
+							<li class="fragment">Modern CPUs can compress about 60-80 MB/s per core</li>
+							<br />
+							<li class="fragment">If CPU constrained, offload compression to a nearby reverse proxy</li>
+							<br />
+							<li class="fragment">For static data over HTTP, you can also use content negotiation</li>
+						</ul>
+						<aside class="notes"></aside>
+					</section>
+				</section>
+
+				<section>
+					<h2>Cache aggressively</h2>
+					<img src="images/cat-aggressive.jpg" />
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>8 Fallacies of Distributed Systems</h2>
+					<ol style="margin-top: 0.9em; line-height: 1.2em">
+						<li>The network is reliable.</li>
+						<li>Latency is zero.</li>
+						<li>Bandwidth is infinite.</li>
+						<li>The network is secure.</li>
+						<li>Topology doesn't change.</li>
+						<li>There is one administrator.</li>
+						<li>Transport cost is zero.</li>
+						<li>The network is homogeneous.</li>
+					</ol>
+					<br />
+					<div class="ui fluid" style="text-align: right; margin-top: 0.9em;">
+						Peter Deutsch - James Gosling<br>
+						1994
+					</div>
+					<aside class="notes"></aside>
+				</section>
+				
+				<section>
+					<h2>Thank you</h2>
+					<img src="images/cats-in-boxes.jpg" />
+					<p><strong>Questions ?</strong></p>
+					<aside class="notes"></aside>
+				</section>
+				
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js.gz"></script>
+		<script src="js/reveal.min.js.gz"></script>
+		<script src="js/jquery.min.js.gz"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				history: true,
+				center: false,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js.gz', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/semantic/js/semantic.min.js.gz', condition: function() { return !!document.querySelector('.ui'); } },
+					{ src: 'plugin/markdown/marked.js.gz', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js.gz', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/d3/js/d3.v3.min.js.gz', async: false, condition: function() { return !!document.querySelector( '[data-chart]' ); } },
+					{ src: 'plugin/d3/js/d3.geo.projection.v0.min.js.gz', async: false, condition: function() { return !!document.querySelector( '[data-chart=geo]' ); } },
+					{ src: 'plugin/d3/js/topojson.v1.min.js.gz', async: false, condition: function() { return !!document.querySelector( '[data-chart=geo]' ); } },
+					{ src: 'plugin/d3/js/vega.js.gz', async: false, condition: function() { return !!document.querySelector( '[data-chart="vega"]' ); } },
+					{ src: 'plugin/highlight/highlight.js.gz', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js.gz', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js.gz', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'js/packetstory.min.js.gz', callback: function () {
+						$(document).ready(PacketStory.init);
+					}}
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

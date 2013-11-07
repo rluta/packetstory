@@ -1,0 +1,302 @@
+.charts {
+	width: 960px;
+	height: 500px;
+}
+
+.country {
+  fill: #ccc;
+  stroke: #fff;
+  stroke-width: .5px;
+  stroke-linejoin: round;
+}
+
+.background {
+  fill: #fff;
+  display: none;
+  stroke: #ccc;
+}
+
+.city {
+  fill: #000;
+  stroke: #000;
+}
+
+.state {
+  fill: #ccc;
+  stroke: #fff;
+  stroke-width: .5px;
+  stroke-linejoin: round;
+}
+
+.graticule {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: .5px;
+}
+
+.graticule.outline {
+  stroke: #333;
+  stroke-opacity: 1;
+  stroke-width: 1.5px;
+}
+
+/* IOS7 messages emulation */
+@import "http://fonts.googleapis.com/css?family=Open+Sans:400,600,700";
+.ios7 * {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ios7 {
+    background: none repeat scroll 0 0 #fff;
+    color: #FFFFFF;
+    font-family: "Open Sans";
+    line-height: 26px;
+    margin: 0 auto;
+    overflow-X: hidden;
+    position: relative;
+}
+
+.ios7 .left {
+  position: absolute;
+  top: 0;
+  left: 35px;
+  font-size: 18px
+}
+
+.ios7 .left:after {
+    border: 3px solid #2095FE;
+    border-right: 3px solid transparent;
+    border-top: 3px solid transparent;
+    content: " ";
+    height: 14px;
+    left: -20px;
+    position: absolute;
+    top: 20px;
+    -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+    width: 14px;
+}
+.ios7 .right {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  font-size: 18px
+}
+.ios7 header {
+  color: #2095FE;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-bottom: 1px solid #bbb;
+  box-shadow: 0 1px 2px rgba(1,1,1,0.2);
+  height: 60px;
+  text-align: center;
+  font-size: 20px;
+  line-height: 58px;
+  white-space: nowrap;
+  
+}
+.ios7 header h2 {
+  line-height: 58px;
+  font-size: 20px;
+  text-transform: none;
+  text-align: center;
+  color: #111111;
+}
+.ios7 .messages-wrapper {
+  padding-top: 10px;
+  position: relative;
+  border: 1px solid #ddd;
+  border-top: 0 none;
+  overflow-y: scrollbar;
+}
+.ios7 .message {
+    border-radius: 20px 20px 20px 20px;
+    margin: 0 15px 10px;
+    padding: 5px 10px;
+    font-size: 20px;
+    position: relative;
+}
+.ios7 .message.to {
+    background-color: #2095FE;
+    color: #fff;
+    margin-left: 80px;
+}
+.ios7 .message.from {
+    background-color: #E5E4E9;
+    color: #363636;
+    margin-right: 80px;
+}
+.ios7 .message.to + .message.to,
+.ios7 .message.from + .message.from {
+  margin-top: -7px;
+}
+.ios7 .message:before {
+    border-color: #2095FE;
+    border-radius: 50% 50% 50% 50%;
+    border-style: solid;
+    border-width: 0 20px;
+    bottom: 0;
+    clip: rect(20px, 35px, 42px, 0px);
+    content: " ";
+    height: 40px;
+    position: absolute;
+    right: -50px;
+    width: 30px;
+}
+.ios7 .message.from:before {
+    border-color: #E5E4E9;
+    left: -50px;
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+.packet {
+	width: 100%:
+	display: grid;
+	grid-template-columns: repeat(80px 10px)[10];
+	grid-auto-flow: columns;
+}
+
+.packet > .data, .packet > .header {
+	width: 80px;
+}
+
+.packet > .pos1 { grid-column: 1 }
+.packet > .pos2 { grid-column: 2 }
+.packet > .pos3 { grid-column: 3 }
+.packet > .pos4 { grid-column: 4 }
+.packet > .pos5 { grid-column: 5 }
+.packet > .pos6 { grid-column: 6 }
+.packet > .pos7 { grid-column: 7 }
+.packet > .pos8 { grid-column: 8 }
+.packet > .pos9 { grid-column: 9 }
+.packet > .pos10 { grid-column: 10 }
+
+g.arrow {
+	stroke: #EF8D0F;
+	fill: #EF8D0F;
+	stroke-linecap:"square";
+}
+
+g.arrow .line {
+	stroke-width: 5px;
+	fill: none;
+}
+
+g.arrow .triangle {
+	stroke: none;
+}
+
+.caption {
+	position: absolute; 
+	z-index:1; 
+	color: #000;
+}
+
+.large.caption {
+	font-size: 5rem;
+	font-weight: 700;
+	color: #EF8D0F;
+	text-shadow: 0.05em 0.05em 0.1em #888;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.packet .header {
+	
+}
+code.cli {
+	margin-top: 0.8em;	
+	text-align: left !important;
+	font-size: 1em;
+	line-height: 1.1em;
+}
+
+code.small.cli {
+	font-size: 0.8em;
+	line-height: 0.9em;
+}
+
+.flag {
+	color: #f00 !important;
+	font-weight: 800;
+	line-height: 7px;
+	height: 7px;
+	font-size: 1em;
+}
+
+.label[data-property], .label[data-payload] {
+	cursor: move
+}
+
+.grid .item.state {
+	font-size: 1.3rem;
+}
+
+.row .column.label {
+	font-size: 1.5rem !important;
+	line-height: 1.8rem;
+}
+
+.packet .header {
+	padding: 2px;
+	background-color: #ccc;
+	color: #fff;
+	font-weight: 800;
+}
+
+.packet .payload {
+	padding: 2px;
+	background-color: #c7d;
+	color: #fff;
+	font-weight: 800;
+}
+
+#sender-state .flag {
+	text-align:  left;
+}
+
+#recipient-state .flag {
+	text-align: right;
+}
+
+.reveal section h3 {
+	margin-top: 1em;
+}
+
+.ui.tabular.large .item {
+	font-size: 1.5rem
+}
+.ui.accordion .title {
+	font-size: 1.4rem;
+	line-height: 1.3rem;
+	text-align: left;
+}
+
+.ui.accordion .content {
+	font-size: 1.3rem;
+	line-height: 1.3rem;
+	text-align: left;
+	overflow-y: scroll;
+}
+
+div.ui.label.color0 {
+	background-color: #1f77b4 !important
+}
+
+div.ui.label.color1 {
+	background-color: #ff7f0e !important
+}
+
+div.ui.label.color2 {
+	background-color: #2ca02c !important
+}
+
+div.ui.label.color3 {
+	background-color: #d62728 !important
+}

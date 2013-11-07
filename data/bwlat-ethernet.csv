@@ -1,0 +1,6 @@
+date,name,bandwidth,latency
+1990,Ethernet 10,10,1000
+1995,Ethernet 100,100,500
+1999,Ethernet 1G,1000,200
+2006,Ethernet 10G,10000,80
+2011,Ethernet 100G,100000,50

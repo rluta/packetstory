@@ -1,0 +1,102 @@
+{
+  "width": 800,
+  "height": 400,
+  "data": [
+    {
+      "name": "bwlat",
+      "url": "data/bwlat-ethernet.csv",
+      "format": {"type": "csv", "parse": {"date":"date", "bandwidth":"number","latency":"number"}}
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "range": "width",
+      "domain": {"data": "bwlat", "field": "data.date"}
+    },
+    {
+      "name": "y",
+      "type": "log",
+      "range": "height",
+      "nice": true,
+      "domainMin": 1,
+      "domain": {"data": "bwlat", "field": "data.bandwidth"}
+    },
+    {
+      "name": "yalt",
+      "type": "log",
+      "range": "height",
+      "domainMin": 1,
+      "domain": {"data": "bwlat", "field": "data.bandwidth"}
+    },
+    {
+      "name": "color", "type": "ordinal", "range": "category10"
+    }
+  ],
+  "axes": [
+    {"type": "x", "title": "Year", "titleOffset": 30, "scale": "x"},
+    {"type": "y", "title": "Bandwidth (Mbps)",  "titleOffset": 50, "scale": "y", 
+    	"values": [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000], "format":"r"},
+    {"type": "y", "title": "Latency (usec)",  "titleOffset": 50, "scale": "yalt","orient":"right", 
+    	"format":"r", "values": [1,2,5,10,20,50,100,200,500,1000,2000,5000]}
+  ],
+  "marks": [
+	{
+    	"type": "line",
+        "from": {"data": "bwlat"},
+        "properties": {
+        	"enter": {
+              "x": {"scale": "x", "field": "data.date"},
+              "y": {"scale": "y", "field": "data.bandwidth"},
+              "stroke": { "scale":"color", "value": 0 },
+              "strokeWidth": {"value": 2}
+            }
+        }
+    },
+	{
+    	"type": "line",
+        "from": {"data": "bwlat"},
+        "properties": {
+        	"enter": {
+              "x": {"scale": "x", "field": "data.date"},
+              "y": {"scale": "yalt", "field": "data.latency"},
+              "stroke": { "scale":"color", "value": 1 },
+              "strokeWidth": {"value": 2}
+            }
+        }
+    },
+    {
+		"type": "text",
+        "from": {
+        	"data": "bwlat",
+            "transform": [{"type": "filter", "test": "index==0"}]
+        },
+		"properties": {
+            "enter": {
+              "x": {"scale": "x", "field": "data.date", "offset": 5},
+              "y": {"scale": "y", "field": "data.bandwidth", "offset":20},
+              "fill": {"scale": "color", "value": 0},
+              "text": {"value": "bandwidth"},
+              "baseline": {"value": "middle"}
+            }
+		}
+	 },
+    {
+		"type": "text",
+        "from": {
+        	"data": "bwlat",
+            "transform": [{"type": "filter", "test": "index==0"}]
+        },
+		"properties": {
+            "enter": {
+              "x": {"scale": "x", "field": "data.date", "offset": 5},
+              "y": {"scale": "yalt", "field": "data.latency", "offset": -20},
+              "fill": {"scale": "color", "value": 1},
+              "text": {"value": "latency"},
+              "baseline": {"value": "middle"}
+            }
+		}
+	 }
+  ]
+}
